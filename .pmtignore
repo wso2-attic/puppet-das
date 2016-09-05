@@ -1,0 +1,8 @@
+pkg/
+hieradata/
+.vagrant
+*.iml
+*.zip
+*.gz
+*.tar
+*.jar

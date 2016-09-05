@@ -18,6 +18,7 @@
 #
 # ------------------------------------------------------------------------------
 
+
 # ------------------------------------------------------
 # CARBON RELATED SPARK PROPERTIES
 # ------------------------------------------------------
@@ -81,7 +82,7 @@ spark.kryoserializer.buffer.max 256m
 # Networking
 spark.blockManager.port 12000
 spark.broadcast.port  12500
-# spark.driver.host <%= @spark['hostname'] %>
+spark.driver.host <%= @spark['hostname'] %>
 spark.driver.port 13000
 spark.executor.port 13500
 spark.fileserver.port 14000
@@ -123,9 +124,3 @@ spark.worker.webui.port 11500
 
 # spark.eventLog.enabled true
 # spark.eventLog.dir <PATH_FOR_SPARK_EVENT_LOGS>
-
-# akka settings
-# akka.remote.netty.tcp.hostname
-# akka.remote.netty.tcp.port 7077
-# akka.remote.netty.tcp.bind-hostname
-# akka.remote.netty.tcp.bind-port 7077
