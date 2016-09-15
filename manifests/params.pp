@@ -190,6 +190,11 @@ class wso2das::params {
       }
     }
 
+    $file_list          = [
+      'dbscripts/identity/h2.sql',
+      'dbscripts/identity/mysql.sql'
+    ]
+
     $portal   = {
       hostname   => 'das.dev.wso2.org'
     }
@@ -209,8 +214,10 @@ class wso2das::params {
     ]
 
     $template_list        = [
+      'repository/conf/identity/identity.xml',
       'repository/conf/datasources/analytics-datasources.xml',
-      'repository/conf/jndi.properties',
+      'repository/conf/datasources/metrics-datasources.xml',
+      'repository/deployment/server/jaggeryapps/portal/configs/designer.json',
       'repository/conf/analytics/spark/spark-defaults.conf',
       'repository/conf/event-processor.xml',
       'repository/conf/carbon.xml',
@@ -343,7 +350,7 @@ class wso2das::params {
   }
 
   $product_name               = 'wso2das'
-  $product_version            = '3.0.0'
+  $product_version            = '3.0.1'
   $platform_version           = '4.4.0'
   $carbon_home                = "${install_dir}/${product_name}-${product_version}"
   $pack_file_abs_path         = "${pack_dir}/${pack_filename}"

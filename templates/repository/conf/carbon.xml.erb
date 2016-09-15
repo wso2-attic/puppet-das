@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
 <!--
-  ~  Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
-  ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
+ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 
 <!--
     This is the main server configuration file
@@ -39,7 +36,7 @@
     <!--
        Product Version
     -->
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
 
     <!--
        Host name or IP address of the machine hosting this server
@@ -136,11 +133,12 @@
          the define value + Offset.
          e.g. Offset=2 and HTTPS port=9443 will set the effective HTTPS port to 9445
          -->
+
 <%- if @ports['offset'] -%>
         <Offset><%= @ports['offset'] %></Offset>
 <%- else -%>
         <Offset>0</Offset>
-<%- end -%>
+<%- end -%>        
 
         <!-- The JMX Ports -->
         <JMX>
@@ -164,6 +162,14 @@
 	<!--<JNDIProviderPort>2199</JNDIProviderPort>-->
 	<!--Override receive port of thrift based entitlement service.-->
 	<ThriftEntitlementReceivePort>10500</ThriftEntitlementReceivePort>
+
+        <!--
+         This is the proxy port of the worker cluster. These need to be configured in a scenario where
+         manager node is not exposed through the load balancer through which the workers are exposed
+         therefore doesn't have a proxy port.
+        <WorkerHttpProxyPort>80</WorkerHttpProxyPort>
+        <WorkerHttpsProxyPort>443</WorkerHttpsProxyPort>
+        -->
 
     </Ports>
 
@@ -546,6 +552,12 @@
             <Class>org.wso2.carbon.ui.transports.fileupload.ToolsAnyFileUploadExecutor</Class>
         </Mapping>
     </FileUploadConfig>
+
+    <!-- FileNameRegEx is used to validate the file input/upload/write-out names.
+    e.g.
+     <FileNameRegEx>^(?!(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.[^.])?$)[^&lt;&gt:"/\\|?*\x00-\x1F][^&lt;&gt:"/\\|?*\x00-\x1F\ .]$</FileNameRegEx>
+    -->
+    <!--<FileNameRegEx></FileNameRegEx>-->
 
     <!--
        Processors which process special HTTP GET requests such as ?wsdl, ?policy etc.
