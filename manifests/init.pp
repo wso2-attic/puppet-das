@@ -16,147 +16,138 @@
 
 # Manages WSO2 Data Analytics Server deployment
 class wso2das (
-  # wso2das specific parameters - start
-  $template_list             = $wso2das::params::template_list,
-  $is_datasource             = $wso2das::params::is_datasource,
-  $directory_list            = $wso2das::params::directory_list,
-  $spark                     = $wso2das::params::spark,
-  $single_node_deployment    = $wso2das::params::single_node_deployment,
-  $ha_deployment             = $wso2das::params::ha_deployment,
-  $analytics_datasources     = $wso2das::params::analytics_datasources,
-  $metrics_datasources       = $wso2das::params::metrics_datasources,
-  $sso_authentication        = $wso2das::params::sso_authentication,
-  # wso2das specific parameters - end
+  # wso2das specific configuration data
+  $analytics_datasources  = $wso2das::params::analytics_datasources,
+  $metrics_datasources    = $wso2das::params::metrics_datasources,
+  $spark                  = $wso2das::params::spark,
+  $is_datasource          = $wso2das::params::is_datasource,
+  $single_node_deployment = $wso2das::params::single_node_deployment,
+  $ha_deployment          = $wso2das::params::ha_deployment,
+  $portal                 = $wso2das::params::portal,
 
-  # system configuration data
-  $packages               = $wso2base::params::packages,
-  $file_list              = $wso2base::params::file_list,
-  $system_file_list       = $wso2base::params::system_file_list,
-  $hosts_mapping          = $wso2base::params::hosts_mapping,
-  $java_home              = $wso2base::params::java_home,
-  $prefs_system_root      = $wso2base::params::java_prefs_system_root,
-  $prefs_user_root        = $wso2base::params::java_prefs_user_root,
-  $java_prefs_system_root = $wso2base::params::java_prefs_system_root,
-  $java_prefs_user_root   = $wso2base::params::java_prefs_user_root,
+  $packages               = $wso2das::params::packages,
+  $template_list          = $wso2das::params::template_list,
+  $file_list              = $wso2das::params::file_list,
+  $patch_list             = $wso2das::params::patch_list,
+  $cert_list              = $wso2das::params::cert_list,
+  $system_file_list       = $wso2das::params::system_file_list,
+  $directory_list         = $wso2das::params::directory_list,
+  $hosts_mapping          = $wso2das::params::hosts_mapping,
+  $java_home              = $wso2das::params::java_home,
+  $java_prefs_system_root = $wso2das::params::java_prefs_system_root,
+  $java_prefs_user_root   = $wso2das::params::java_prefs_user_root,
+  $vm_type                = $wso2das::params::vm_type,
+  $wso2_user              = $wso2das::params::wso2_user,
+  $wso2_group             = $wso2das::params::wso2_group,
+  $product_name           = $wso2das::params::product_name,
+  $product_version        = $wso2das::params::product_version,
+  $platform_version       = $wso2das::params::platform_version,
+  $carbon_home_symlink    = $wso2das::params::carbon_home_symlink,
+  $remote_file_url        = $wso2das::params::remote_file_url,
+  $maintenance_mode       = $wso2das::params::maintenance_mode,
+  $install_mode           = $wso2das::params::install_mode,
+  $install_dir            = $wso2das::params::install_dir,
+  $pack_dir               = $wso2das::params::pack_dir,
+  $pack_filename          = $wso2das::params::pack_filename,
+  $pack_extracted_dir     = $wso2das::params::pack_extracted_dir,
+  $patches_dir            = $wso2das::params::patches_dir,
+  $service_name           = $wso2das::params::service_name,
+  $service_template       = $wso2das::params::service_template,
+  $ipaddress              = $wso2das::params::ipaddress,
+  $enable_secure_vault    = $wso2das::params::enable_secure_vault,
+  $secure_vault_configs   = $wso2das::params::secure_vault_configs,
+  $key_stores             = $wso2das::params::key_stores,
+  $carbon_home            = $wso2das::params::carbon_home,
+  $pack_file_abs_path     = $wso2das::params::pack_file_abs_path,
 
-  $master_datasources     = $wso2base::params::master_datasources,
-  $registry_mounts        = $wso2base::params::registry_mounts,
-  $carbon_home_symlink    = $wso2base::params::carbon_home_symlink,
-  $wso2_user              = $wso2base::params::wso2_user,
-  $wso2_group             = $wso2base::params::wso2_group,
-  $maintenance_mode       = $wso2base::params::maintenance_mode,
-  $install_mode           = $wso2base::params::install_mode,
-  $install_dir            = $wso2base::params::install_dir,
-  $pack_dir               = $wso2base::params::pack_dir,
-  $pack_filename          = $wso2base::params::pack_filename,
-  $pack_extracted_dir     = $wso2base::params::pack_extracted_dir,
-  $hostname               = $wso2base::params::hostname,
-  $mgt_hostname           = $wso2base::params::mgt_hostname,
-  $worker_node            = $wso2base::params::worker_node,
-  $patches_dir            = $wso2base::params::patches_dir,
-  $service_name           = $wso2base::params::service_name,
-  $service_template       = $wso2base::params::service_template,
-  $usermgt_datasource     = $wso2base::params::usermgt_datasource,
-  $local_reg_datasource   = $wso2base::params::local_reg_datasource,
-  $clustering             = $wso2base::params::clustering,
-  $dep_sync               = $wso2base::params::dep_sync,
-  $ports                  = $wso2base::params::ports,
-  $jvm                    = $wso2base::params::jvm,
-  $ipaddress              = $wso2base::params::ipaddress,
-  $fqdn                   = $wso2base::params::fqdn,
-  $sso_authentication     = $wso2base::params::sso_authentication,
-  $user_management        = $wso2base::params::user_management,
-  $enable_secure_vault    = $wso2base::params::enable_secure_vault,
-  $secure_vault_configs   = $wso2base::params::secure_vault_configs,
-  $key_stores             = $wso2base::params::key_stores,
-
-  $patch_list                = $wso2das::params::patch_list,
-  $platform_version          = $wso2das::params::platform_version,
-  $post_install_resources    = $wso2das::params::post_install_resources,
-  $post_configure_resources  = $wso2das::params::post_configure_resources,
-  $post_start_resources      = $wso2das::params::post_start_resources
-  # other paramaters - end
-
+  # Templated configuration parameters
+  $master_datasources     = $wso2das::params::master_datasources,
+  $registry_mounts        = $wso2das::params::registry_mounts,
+  $hostname               = $wso2das::params::hostname,
+  $mgt_hostname           = $wso2das::params::mgt_hostname,
+  $worker_node            = $wso2das::params::worker_node,
+  $usermgt_datasource     = $wso2das::params::usermgt_datasource,
+  $local_reg_datasource   = $wso2das::params::local_reg_datasource,
+  $clustering             = $wso2das::params::clustering,
+  $dep_sync               = $wso2das::params::dep_sync,
+  $ports                  = $wso2das::params::ports,
+  $jvm                    = $wso2das::params::jvm,
+  $fqdn                   = $wso2das::params::fqdn,
+  $sso_authentication     = $wso2das::params::sso_authentication,
+  $user_management        = $wso2das::params::user_management
 ) inherits wso2das::params {
 
-  ::wso2base::system { "Create system configurations for [product] ${::product_name} [profile] ${::product_profile} ":
-    packages          => $packages,
-    wso2_group        => $wso2_group,
-    wso2_user         => $wso2_user,
-    service_name      => $service_name,
-    service_template  => $service_template,
-    hosts_mapping     => $hosts_mapping,
-    prefs_system_root => $prefs_system_root,
-    prefs_user_root   => $prefs_user_root
+
+  validate_hash($analytics_datasources)
+  validate_hash($metrics_datasources)
+  validate_hash($spark)
+  validate_string($is_datasource)
+  validate_hash($single_node_deployment)
+  validate_hash($ha_deployment)
+  validate_hash($portal)
+
+  validate_hash($master_datasources)
+  if $registry_mounts != undef {
+    validate_hash($registry_mounts)
+  }
+  validate_string($hostname)
+  validate_string($mgt_hostname)
+  validate_bool($worker_node)
+  validate_string($usermgt_datasource)
+  validate_string($local_reg_datasource)
+  validate_hash($clustering)
+  validate_hash($dep_sync)
+  validate_hash($ports)
+  validate_hash($jvm)
+  validate_string($fqdn)
+  validate_hash($sso_authentication)
+  validate_hash($user_management)
+
+  class { '::wso2base':
+    packages               => $packages,
+    template_list          => $template_list,
+    file_list              => $file_list,
+    patch_list             => $patch_list,
+    cert_list              => $cert_list,
+    system_file_list       => $system_file_list,
+    directory_list         => $directory_list,
+    hosts_mapping          => $hosts_mapping,
+    java_home              => $java_home,
+    java_prefs_system_root => $java_prefs_system_root,
+    java_prefs_user_root   => $java_prefs_user_root,
+    vm_type                => $vm_type,
+    wso2_user              => $wso2_user,
+    wso2_group             => $wso2_group,
+    product_name           => $product_name,
+    product_version        => $product_version,
+    platform_version       => $platform_version,
+    carbon_home_symlink    => $carbon_home_symlink,
+    remote_file_url        => $remote_file_url,
+    maintenance_mode       => $maintenance_mode,
+    install_mode           => $install_mode,
+    install_dir            => $install_dir,
+    pack_dir               => $pack_dir,
+    pack_filename          => $pack_filename,
+    pack_extracted_dir     => $pack_extracted_dir,
+    patches_dir            => $patches_dir,
+    service_name           => $service_name,
+    service_template       => $service_template,
+    ipaddress              => $ipaddress,
+    enable_secure_vault    => $enable_secure_vault,
+    secure_vault_configs   => $secure_vault_configs,
+    key_stores             => $key_stores,
+    carbon_home            => $carbon_home,
+    pack_file_abs_path     => $pack_file_abs_path
   }
 
-  $carbon_home          = "${install_dir}/${pack_extracted_dir}"
+  contain wso2base
+  contain wso2base::system
+  contain wso2base::clean
+  contain wso2base::install
+  contain wso2base::configure
+  contain wso2base::service
 
-  if ($enable_secure_vault == true) {
-    $key_store_password   = $secure_vault_configs['key_store_password']['password']
-  }
-
-  ::wso2base::clean_and_install { "Cleaning and Installing $title":
-    maintenance_mode      => $maintenance_mode,
-    install_mode          => $install_mode,
-    pack_filename         => $pack_filename,
-    pack_dir              => $pack_dir,
-    install_dir           => $install_dir,
-    wso2_user             => $wso2_user,
-    wso2_group            => $wso2_group,
-    carbon_home_symlink   => $carbon_home_symlink,
-    hosts_mappings        => $hosts_mapping,
-    require               => Wso2base::System["Create system configurations for [product] ${::product_name} [profile] ${::product_profile} "]
-  }
-
-  if ($post_install_resources != undef) {
-    ::wso2base::resource {
-      $post_install_resources:
-        require => Wso2base::Clean_and_install["Cleaning and Installing $title"],
-        before  => Wso2base::Configure_and_deploy["Configuring and Deploying $title"]
-    }
-  }
-
-  ::wso2base::configure_and_deploy { "Configuring and Deploying $title":
-    install_dir                     => $install_dir,
-    patch_list                      => $patch_list,
-    patches_dir                     => $patches_dir,
-    platform_version                => $platform_version,
-    wso2_user                       => $wso2_user,
-    wso2_group                      => $wso2_group,
-    template_list                   => $template_list,
-    directory_list                  => $directory_list,
-    file_list                       => $file_list,
-    system_file_list                => $system_file_list,
-    enable_secure_vault             => $enable_secure_vault,
-    key_store_password              => $key_store_password,
-    java_home                       => $java_home,
-    cert_file                       => $cert_file,
-    trust_store_password            => $trust_store_password,
-    module_name                     => $title,
-    marathon_lb_cert_config_enabled => $marathon_lb_cert_config_enabled,
-    require                         => Wso2base::Clean_and_install["Cleaning and Installing $title"]
-  }
-
-  if (!empty($post_configure_resources)) {
-    ::wso2base::resource {
-      $post_configure_resources:
-        require => Wso2base::Configure_and_deploy["Configuring and Deploying $title"],
-        before  => Wso2base::Start["Starting $title"]
-    }
-  }
-
-  ::wso2base::start { "Starting $title" :
-    service_name => $service_name,
-    install_dir  => $install_dir,
-    require      => Wso2base::Configure_and_deploy["Configuring and Deploying $title"]
-  }
-
-  if (!empty($post_start_resources)) {
-    ::wso2base::resource {
-      $post_start_resources:
-        require => Wso2base::Start["Starting $title"]
-    }
-  }
-
+  Class['::wso2base'] -> Class['::wso2base::system']
+  -> Class['::wso2base::clean'] -> Class['::wso2base::install']
+  -> Class['::wso2base::configure'] ~> Class['::wso2base::service']
 }

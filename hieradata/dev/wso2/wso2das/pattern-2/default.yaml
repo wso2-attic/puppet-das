@@ -23,8 +23,7 @@ wso2::mgt_hostname: das.dev.wso2.org
 wso2::file_list:
   - dbscripts/identity/h2.sql
   - dbscripts/identity/mysql.sql
-## Uncomment the following for a clustered setup
-#  - "repository/components/lib/%{hiera('wso2::datasources::mysql::connector_jar')}"
+  - "repository/components/lib/%{hiera('wso2::datasources::mysql::connector_jar')}"
 
 wso2::portal:
   hostname: das.dev.wso2.org
@@ -42,17 +41,18 @@ wso2::template_list:
 wso2::directory_list:
   - dbscripts/identity
 
-## Comment out the following in a clustered setup
+wso2::usermgt_datasource: wso2_user_db
+
 wso2::spark:
   master: local
-  master_count: 1
+  master_count: 2
   hostname: "%{::ipaddress}"
 
 wso2::single_node_deployment:
-  enabled: true
+  enabled: false
 
 wso2::ha_deployment:
-  enabled: false
+  enabled: true
   presenter_enabled: false
   worker_enabled: true
   eventSync:
@@ -63,64 +63,40 @@ wso2::ha_deployment:
     port: 10005
   presentation:
     hostName: "%{::ipaddress}"
-    port: 11000
+    port: 11002
 
-## Uncomment the following for a clustered setup
-#wso2::usermgt_datasource: wso2_user_db
-#
-#wso2::spark:
-#  master_count: 2
-#  hostname: "%{::ipaddress}"
-#
-#wso2::single_node_deployment:
-#  enabled: false
-#
-#wso2::ha_deployment:
-#  enabled: true
-#  presenter_enabled: false
-#  worker_enabled: true
-#  eventSync:
-#    hostName: "%{::ipaddress}"
-#    port: 11224
-#  management:
-#    hostName: "%{::ipaddress}"
-#    port: 10005
-#  presentation:
-#    hostName: "%{::ipaddress}"
-#    port: 11002
-#
-## Registry mounts
-#wso2::registry_mounts:
-#  wso2_config_db:
-#    path: /_system/config
-#    target_path: /_system/config/das
-#    read_only: false
-#    registry_root: /
-#    enable_cache: true
-#
-#  wso2_gov_db:
-#    path: /_system/governance
-#    target_path: /_system/governance
-#    read_only: false
-#    registry_root: /
-#    enable_cache: true
-#
-#wso2::clustering:
-#  enabled: true
-#  domain: das.wso2.domain
-#  local_member_host: "%{::ipaddress}"
-#  local_member_port: 4000
-#  sub_domain: mgt
+# Registry mounts
+wso2::registry_mounts:
+  wso2_config_db:
+    path: /_system/config
+    target_path: /_system/config/das
+    read_only: false
+    registry_root: /
+    enable_cache: true
+
+  wso2_gov_db:
+    path: /_system/governance
+    target_path: /_system/governance
+    read_only: false
+    registry_root: /
+    enable_cache: true
+
+wso2::clustering:
+  enabled: true
+  domain: das.wso2.domain
+  local_member_host: "%{::ipaddress}"
+  local_member_port: 4000
+  sub_domain: mgt
 # WKA membership scheme
-#  membership_scheme: wka
-#  wka:
-#    members:
-#      -
-#        hostname: 192.168.100.61
-#        port: 4000
-#      -
-#        hostname: 192.168.100.62
-#        port: 4000
+  membership_scheme: wka
+  wka:
+    members:
+      -
+        hostname: 192.168.100.61
+        port: 4000
+      -
+        hostname: 192.168.100.62
+        port: 4000
 # AWS membership scheme
 #   membership_scheme: aws
 #   aws:
@@ -132,198 +108,123 @@ wso2::ha_deployment:
 #     tag_key: tag-key
 #     tag_value: tag-value
 
-## Uncomment the following MySQL data sources for a clustered setup
-#wso2::master_datasources:
-#  wso2_config_db:
-#    name: WSO2_CONFIG_DB
-#    description: The datasource used for config registry
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/WSO2CONFIG_DB?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    jndi_config: jdbc/WSO2_CONFIG_DB
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-#
-#  wso2_gov_db:
-#    name: WSO2_GOV_DB
-#    description: The datasource used for gov registry
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/WSO2REG_DB?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    jndi_config: jdbc/WSO2_GOV_DB
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-#
-#  wso2_user_db:
-#    name: WSO2_USER_DB
-#    description: The datasource is used for user mangement and userstore
-#    driver_class_name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://192.168.100.1:3306/WSO2USER_DB?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    jndi_config: jdbc/WSO2USER_DB
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+wso2::master_datasources:
+  wso2_config_db:
+    name: WSO2_CONFIG_DB
+    description: The datasource used for config registry
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/WSO2_CONFIG_DB?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
+    jndi_config: jdbc/WSO2_CONFIG_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2_gov_db:
+    name: WSO2_GOV_DB
+    description: The datasource used for gov registry
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/WSO2_REG_DB?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
+    jndi_config: jdbc/WSO2_GOV_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
+
+  wso2_user_db:
+    name: WSO2_USER_DB
+    description: The datasource is used for user mangement and userstore
+    driver_class_name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.100.1:3306/WSO2_USER_DB?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
+    jndi_config: jdbc/WSO2USER_DB
+    max_active: "%{hiera('wso2::datasources::common::max_active')}"
+    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
+    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
+    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
+    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
 
 wso2::analytics_datasources:
   wso2_analytics_fs_db:
     name: WSO2_ANALYTICS_FS_DB
     description: The datasource used for analytics file system
-    driver_class_name: "%{hiera('wso2::datasources::h2::driver_class_name')}"
-    url: jdbc:h2:repository/database/ANALYTICS_FS_DB;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
-    username: "%{hiera('wso2::datasources::common::username')}"
-    password: "%{hiera('wso2::datasources::common::password')}"
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_FS_DB?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
     max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
     test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
     default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-    validation_query: "%{hiera('wso2::datasources::h2::validation_query')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
     validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
     default_auto_commit: false
     initial_size: 0
     test_while_idle: true
     min_evictable_idle_time_millis: 4000
-
-## Uncomment the following MySQL data source and comment out the above H2 data source for a clustered setup
-#  wso2_analytics_fs_db:
-#    name: WSO2_ANALYTICS_FS_DB
-#    description: The datasource used for analytics file system
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_FS_DB?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-#    default_auto_commit: false
-#    initial_size: 0
-#    test_while_idle: true
-#    min_evictable_idle_time_millis: 4000
 
   wso2_analytics_event_store_db:
     name: WSO2_ANALYTICS_EVENT_STORE_DB
     description: The datasource used for analytics record store
-    driver_class_name: "%{hiera('wso2::datasources::h2::driver_class_name')}"
-    url: jdbc:h2:repository/database/ANALYTICS_EVENT_STORE;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
-    username: "%{hiera('wso2::datasources::common::username')}"
-    password: "%{hiera('wso2::datasources::common::password')}"
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_EVENT_STORE?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
     max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
     test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
     default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-    validation_query: "%{hiera('wso2::datasources::h2::validation_query')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
     validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
     default_auto_commit: false
     initial_size: 0
     test_while_idle: true
     min_evictable_idle_time_millis: 4000
-
-## Uncomment the following MySQL data source and comment out the above H2 data source for a clustered setup
-#  wso2_analytics_event_store_db:
-#    name: WSO2_ANALYTICS_EVENT_STORE_DB
-#    description: The datasource used for analytics record store
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_EVENT_STORE?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-#    default_auto_commit: false
-#    initial_size: 0
-#    test_while_idle: true
-#    min_evictable_idle_time_millis: 4000
 
   wso2_analytics_processed_data_store_db:
     name: WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB
     description: The datasource used for analytics record store
-    driver_class_name: "%{hiera('wso2::datasources::h2::driver_class_name')}"
-    url: jdbc:h2:repository/database/ANALYTICS_PROCESSED_DATA_STORE;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000
-    username: "%{hiera('wso2::datasources::common::username')}"
-    password: "%{hiera('wso2::datasources::common::password')}"
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_PROCESSED_DATA_STORE?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
     max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
     test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
     default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-    validation_query: "%{hiera('wso2::datasources::h2::validation_query')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
     validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
     default_auto_commit: false
     initial_size: 0
     test_while_idle: true
     min_evictable_idle_time_millis: 4000
-
-## Uncomment the following MySQL data source and comment out the above H2 data source for a clustered setup
-#  wso2_analytics_processed_data_store_db:
-#    name: WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB
-#    description: The datasource used for analytics record store
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_PROCESSED_DATA_STORE?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-#    default_auto_commit: false
-#    initial_size: 0
-#    test_while_idle: true
-#    min_evictable_idle_time_millis: 4000
 
 wso2::metrics_datasources:
   wso2_metrics_db:
     name: WSO2_METRICS_DB
     description: The default datasource used for WSO2 Carbon Metrics
-    driver_class_name: "%{hiera('wso2::datasources::h2::driver_class_name')}"
-    url: jdbc:h2:repository/database/WSO2METRICS_DB;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
-    username: "%{hiera('wso2::datasources::common::username')}"
-    password: "%{hiera('wso2::datasources::common::password')}"
+    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
+    url: jdbc:mysql://192.168.100.1:3306/WSO2_CONFIG_DB?autoReconnect=true
+    username: "%{hiera('wso2::datasources::mysql::username')}"
+    password: "%{hiera('wso2::datasources::mysql::password')}"
     jndi_config: jdbc/WSO2MetricsDB
     datasource: WSO2MetricsDB
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
     max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
     test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
     default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-    validation_query: "%{hiera('wso2::datasources::h2::validation_query')}"
+    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
     validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
-
-## Uncomment the following MySQL data source and comment out the above H2 data source for a clustered setup
-#  wso2_metrics_db:
-#    name: WSO2_METRICS_DB
-#    description: The default datasource used for WSO2 Carbon Metrics
-#    driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-#    url: jdbc:mysql://192.168.100.1:3306/WSO2METRICS_DB?autoReconnect=true
-#    username: "%{hiera('wso2::datasources::mysql::username')}"
-#    password: "%{hiera('wso2::datasources::mysql::password')}"
-#    jndi_config: jdbc/WSO2MetricsDB
-#    datasource: WSO2MetricsDB
-#    max_active: "%{hiera('wso2::datasources::common::max_active')}"
-#    max_wait: "%{hiera('wso2::datasources::common::max_wait')}"
-#    test_on_borrow: "%{hiera('wso2::datasources::common::test_on_borrow')}"
-#    default_auto_commit: "%{hiera('wso2::datasources::common::default_auto_commit')}"
-#    validation_query: "%{hiera('wso2::datasources::mysql::validation_query')}"
-#    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
 
 # SSO Configuration
 wso2::sso_authentication:
