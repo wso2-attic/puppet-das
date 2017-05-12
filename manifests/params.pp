@@ -78,6 +78,8 @@ class wso2das::params {
     $user_management          = hiera('wso2::user_management')
     $enable_secure_vault      = hiera('wso2::enable_secure_vault')
 
+    $remove_file_list         = hiera_array('wso2::remove_file_list', undef)
+
     if $enable_secure_vault {
       $secure_vault_configs   = hiera('wso2::secure_vault_configs')
     }

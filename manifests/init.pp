@@ -25,6 +25,7 @@ class wso2das (
   $ha_deployment          = $wso2das::params::ha_deployment,
   $portal                 = $wso2das::params::portal,
 
+  $remove_file_list       = $wso2am_runtime::params::remove_file_list,
   $packages               = $wso2das::params::packages,
   $template_list          = $wso2das::params::template_list,
   $file_list              = $wso2das::params::file_list,
@@ -137,6 +138,7 @@ class wso2das (
     secure_vault_configs   => $secure_vault_configs,
     key_stores             => $key_stores,
     carbon_home            => $carbon_home,
+    remove_file_list       => $remove_file_list,
     pack_file_abs_path     => $pack_file_abs_path
   }
 
