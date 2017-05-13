@@ -18,7 +18,7 @@ Follow the steps mentioned in the [wiki](https://github.com/wso2/puppet-base/wik
 
 Copy the following files to their corresponding locations.
 
-1. WSO2 Data Analytics Server distribution (3.0.0 or 3.0.1) to `<PUPPET_HOME>/modules/wso2das/files`
+1. WSO2 Data Analytics Server distribution (3.0.0, 3.0.1 and 3.1.0) to `<PUPPET_HOME>/modules/wso2das/files`
 2. JDK 1.7_80 distribution to `<PUPPET_HOME>/modules/wso2base/files`
 
 ## Running WSO2 Data Analytics Server in the `default` profile
