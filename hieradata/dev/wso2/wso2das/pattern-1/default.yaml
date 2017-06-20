@@ -16,10 +16,10 @@
 classes:
   - wso2das
 
+java_class: wso2base::java
 wso2::service_name: wso2das
 wso2::hostname: das.dev.wso2.org
 wso2::mgt_hostname: das.dev.wso2.org
-
 wso2::file_list:
   - dbscripts/identity/h2.sql
   - dbscripts/identity/mysql.sql
@@ -47,9 +47,6 @@ wso2::spark:
   master: local
   master_count: 1
   hostname: "%{::ipaddress}"
-
-wso2::single_node_deployment:
-  enabled: true
 
 wso2::ha_deployment:
   enabled: false

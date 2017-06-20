@@ -28,7 +28,6 @@ class wso2das::params {
     $metrics_datasources      = hiera('wso2::metrics_datasources')
     $spark                    = hiera('wso2::spark')
     $is_datasource            = hiera('wso2::is_datasource', undef)
-    $single_node_deployment   = hiera('wso2::single_node_deployment')
     $ha_deployment            = hiera('wso2::ha_deployment')
     $portal                   = hiera('wso2::portal')
 
@@ -85,7 +84,6 @@ class wso2das::params {
     }
 
     $key_stores               = hiera('wso2::key_stores')
-
   } else {
 
 
@@ -352,7 +350,7 @@ class wso2das::params {
   }
 
   $product_name               = 'wso2das'
-  $product_version            = '3.0.1'
+  $product_version            = '3.1.0'
   $platform_version           = '4.4.0'
   $carbon_home                = "${install_dir}/${product_name}-${product_version}"
   $pack_file_abs_path         = "${pack_dir}/${pack_filename}"

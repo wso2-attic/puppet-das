@@ -16,6 +16,7 @@
 classes:
   - wso2das
 
+java_class: wso2base::java
 wso2::service_name: wso2das
 wso2::hostname: das.dev.wso2.org
 wso2::mgt_hostname: das.dev.wso2.org
@@ -32,6 +33,7 @@ wso2::template_list:
   - repository/conf/identity/identity.xml
   - repository/conf/datasources/analytics-datasources.xml
   - repository/conf/datasources/metrics-datasources.xml
+  - repository/conf/datasources/master-datasources.xml
   - repository/conf/analytics/spark/spark-defaults.conf
   - repository/conf/event-processor.xml
   - repository/deployment/server/jaggeryapps/portal/configs/designer.json
@@ -47,9 +49,6 @@ wso2::spark:
   master: local
   master_count: 2
   hostname: "%{::ipaddress}"
-
-wso2::single_node_deployment:
-  enabled: false
 
 wso2::ha_deployment:
   enabled: true

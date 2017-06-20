@@ -59,13 +59,15 @@ carbon.das.symbolic.link <%= @carbon_home_symlink %>
 # This is useful for setting default environmental settings.
 # Check http://spark.apache.org/docs/latest/configuration.html#environment-variables for further information
 
-# Application Properties
+# Application (Spark Driver) Properties
+# ------------------------------------------------------
 spark.app.name  CarbonAnalytics
-spark.driver.cores 1
-spark.driver.memory 512m
-spark.executor.memory 512m
+# Spark Driver will be running inside the carbon JVM. Hence the below properties are obsolete
+# spark.driver.cores 1
+# spark.driver.memory 512m
 
 # Runtime Environment
+# ------------------------------------------------------
 
 # Spark UI
 spark.ui.port 4040
@@ -86,6 +88,7 @@ spark.driver.port 13000
 spark.executor.port 13500
 spark.fileserver.port 14000
 spark.replClassServer.port 14500
+spark.akka.timeout	1000s
 
 # Scheduling
 spark.scheduler.mode FAIR
@@ -115,8 +118,19 @@ spark.worker.dir work
 spark.worker.port 11000
 spark.worker.webui.port 11500
 
-# Spark Logging
+# Executors
+# spark.executor.cores 1 ; Default: Takes all the available cores in the worker
+spark.executor.memory 1g
+spark.executor.logs.rolling.strategy  size
+spark.executor.logs.rolling.maxSize  10000000
+spark.executor.logs.rolling.maxRetainedFiles 10
 
+# spark.cores.max ; Default: Int.MAX_VALUE; The maximum amount of CPU cores to request for the application from across
+# the cluster (not from each machine)
+
+
+# Spark Logging
+# ------------------------------------------------------
 # To allow event logging for spark you need to uncomment
 # the line spark.eventlog.log true and set the directory in which the
 # logs will be stored.
@@ -124,8 +138,8 @@ spark.worker.webui.port 11500
 # spark.eventLog.enabled true
 # spark.eventLog.dir <PATH_FOR_SPARK_EVENT_LOGS>
 
-# akka settings
-# akka.remote.netty.tcp.hostname
-# akka.remote.netty.tcp.port 7077
-# akka.remote.netty.tcp.bind-hostname
-# akka.remote.netty.tcp.bind-port 7077
+# YARN related configs
+# ------------------------------------------------------
+# spark.yarn.jar <path to the spark-core_2.10_1.4.3.wso2v1.jar>
+
+
