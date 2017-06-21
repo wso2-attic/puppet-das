@@ -6,6 +6,31 @@
         "isCreateGadgetEnable": false,
         "ignoreProviders": ["rt"]
     },
+    <%- if @sso_authentication['enabled']-%>
+    "authentication": {
+        "activeMethod": "sso",
+        "methods": {
+            "sso": {
+                "attributes": {
+                    "issuer": "portal",
+                    "identityProviderURL": "<%= @sso_authentication['sso_service_url'] %>",
+                    "responseSigningEnabled": true,
+                    "validateAssertionValidityPeriod": true,
+                    "validateAudienceRestriction": true,
+                    "assertionSigningEnabled": true,
+                    "acs": "<%= @sso_authentication['consumer_service_url'] %>",
+                    "identityAlias": "wso2carbon",
+                    "defaultNameIDPolicy": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                    "useTenantKey": true,
+                    "isPassive": false
+                }
+            },
+            "basic": {
+                "attributes": {}
+            }
+        }
+    },
+    <%- else -%>
     "authentication": {
         "activeMethod": "basic",
         "methods": {
@@ -29,6 +54,7 @@
             }
         }
     },
+    <%- end -%>
     "authorization": {
         "activeMethod": "",
         "methods": {
