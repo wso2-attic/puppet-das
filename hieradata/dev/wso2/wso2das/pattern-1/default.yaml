@@ -36,9 +36,6 @@ wso2::template_list:
 #  - bin/ciphertool.sh
 #  - password-tmp
 
-wso2::directory_list:
-  - dbscripts/identity
-
 wso2::spark:
   master: local
   master_count: 1
