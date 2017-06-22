@@ -20,13 +20,9 @@ wso2::service_name: wso2das
 wso2::hostname: das.dev.wso2.org
 wso2::mgt_hostname: das.dev.wso2.org
 
-wso2::file_list:
-  - dbscripts/identity/h2.sql
-  - dbscripts/identity/mysql.sql
+#wso2::file_list:
 #  - "repository/components/lib/%{hiera('wso2::datasources::mysql::connector_jar')}"
-
-wso2::portal:
-  hostname: das.dev.wso2.org
+#wso2::datasources::mysql::connector_jar: mysql-connector-java-5.1.39-bin.jar
 
 wso2::template_list:
   - repository/conf/identity/identity.xml
@@ -40,16 +36,10 @@ wso2::template_list:
 #  - bin/ciphertool.sh
 #  - password-tmp
 
-wso2::directory_list:
-  - dbscripts/identity
-
 wso2::spark:
   master: local
   master_count: 1
   hostname: "%{::ipaddress}"
-
-wso2::single_node_deployment:
-  enabled: true
 
 wso2::ha_deployment:
   enabled: false
@@ -108,6 +98,11 @@ wso2::clustering:
 #     region: region
 #     tag_key: tag-key
 #     tag_value: tag-value
+
+wso2::portal:
+  hostname: das.dev.wso2.org
+#  port: ""
+#  protocol: ""
 
 wso2::is_datasource: wso2_carbon_db
 
@@ -264,12 +259,12 @@ wso2::metrics_datasources:
 #    validation_interval: "%{hiera('wso2::datasources::common::validation_interval')}"
 
 # SSO Configuration
-wso2::sso_authentication:
-  enabled: false
-  login_page: /carbon/admin/login.jsp
-  service_provider_id: wso2das
-  sso_service_url: https://is.dev.wso2.org:9443/samlsso
-  consumer_service_url: https://das.dev.wso2.org:9443/acs
+#wso2::sso_authentication:
+#  enabled: false
+#  login_page: /carbon/admin/login.jsp
+#  service_provider_id: wso2das
+#  sso_service_url: https://is.dev.wso2.org:9443/samlsso
+#  consumer_service_url: https://das.dev.wso2.org:9443/acs
 
 # Secure vault configuration
 #wso2::enable_secure_vault: true

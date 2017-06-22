@@ -19,13 +19,14 @@ servers:
     hostname: das1.dev.wso2.org
     facters:
       product_name: wso2das
-      product_version: 3.0.1
+      product_version: 3.1.0
       product_profile: default
       environment: dev
       platform: default
       use_hieradata: true
+    pattern: pattern-2
     box: ubuntu/trusty64
-    ip: 192.168.100.62
+    ip: 192.168.100.61
     ram: 2048
     cpu: 1
 
@@ -34,11 +35,13 @@ servers:
     hostname: das2.dev.wso2.org
     facters:
       product_name: wso2das
-      product_version: 3.0.1
+      product_version: 3.1.0
       product_profile: default
       environment: dev
       platform: default
+      use_hieradata: true
+    pattern: pattern-2
     box: ubuntu/trusty64
-    ip: 192.168.100.61
+    ip: 192.168.100.62
     ram: 2048
     cpu: 1

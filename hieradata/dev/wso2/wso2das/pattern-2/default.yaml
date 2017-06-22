@@ -21,17 +21,19 @@ wso2::hostname: das.dev.wso2.org
 wso2::mgt_hostname: das.dev.wso2.org
 
 wso2::file_list:
-  - dbscripts/identity/h2.sql
-  - dbscripts/identity/mysql.sql
   - "repository/components/lib/%{hiera('wso2::datasources::mysql::connector_jar')}"
+wso2::datasources::mysql::connector_jar: mysql-connector-java-5.1.41-bin.jar
 
 wso2::portal:
   hostname: das.dev.wso2.org
+#  port: ""
+#  protocol: ""
 
 wso2::template_list:
   - repository/conf/identity/identity.xml
   - repository/conf/datasources/analytics-datasources.xml
   - repository/conf/datasources/metrics-datasources.xml
+  - repository/conf/datasources/master-datasources.xml
   - repository/conf/analytics/spark/spark-defaults.conf
   - repository/conf/event-processor.xml
   - repository/deployment/server/jaggeryapps/portal/configs/designer.json
@@ -40,16 +42,10 @@ wso2::template_list:
 #  - bin/ciphertool.sh
 #  - password-tmp
 
-wso2::directory_list:
-  - dbscripts/identity
-
 wso2::spark:
   master: local
   master_count: 2
   hostname: "%{::ipaddress}"
-
-wso2::single_node_deployment:
-  enabled: false
 
 wso2::ha_deployment:
   enabled: true
@@ -108,6 +104,18 @@ wso2::clustering:
 #     tag_key: tag-key
 #     tag_value: tag-value
 
+# Deployment synchronization configuration
+wso2::dep_sync:
+  enabled: false
+  auto_checkout: true
+  auto_commit: false
+  repository_type: svn
+  svn:
+     url: http://svnrepo.example.com/repos/
+     user: username
+     password: password
+     append_tenant_id: true
+
 wso2::is_datasource: wso2_carbon_db
 
 wso2::master_datasources:
@@ -115,7 +123,7 @@ wso2::master_datasources:
     name: WSO2_CONFIG_DB
     description: The datasource used for config registry
     driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-    url: jdbc:mysql://192.168.100.1:3306/WSO2_CONFIG_DB?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/WSO2_CONFIG_DB?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     jndi_config: jdbc/WSO2_CONFIG_DB
@@ -130,7 +138,7 @@ wso2::master_datasources:
     name: WSO2_GOV_DB
     description: The datasource used for gov registry
     driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-    url: jdbc:mysql://192.168.100.1:3306/WSO2_REG_DB?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/WSO2_REG_DB?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     jndi_config: jdbc/WSO2_GOV_DB
@@ -145,7 +153,7 @@ wso2::master_datasources:
     name: WSO2_USER_DB
     description: The datasource is used for user mangement and userstore
     driver_class_name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.100.1:3306/WSO2_USER_DB?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/WSO2_USER_DB?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     jndi_config: jdbc/WSO2_USER_DB
@@ -161,7 +169,7 @@ wso2::analytics_datasources:
     name: WSO2_ANALYTICS_EVENT_STORE_DB
     description: The datasource used for analytics record store
     driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_EVENT_STORE?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/ANALYTICS_EVENT_STORE?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
@@ -179,7 +187,7 @@ wso2::analytics_datasources:
     name: WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB
     description: The datasource used for analytics record store
     driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-    url: jdbc:mysql://192.168.100.1:3306/ANALYTICS_PROCESSED_DATA_STORE?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/ANALYTICS_PROCESSED_DATA_STORE?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     max_active: "%{hiera('wso2::datasources::common::max_active')}"
@@ -198,7 +206,7 @@ wso2::metrics_datasources:
     name: WSO2_METRICS_DB
     description: The default datasource used for WSO2 Carbon Metrics
     driver_class_name: "%{hiera('wso2::datasources::mysql::driver_class_name')}"
-    url: jdbc:mysql://192.168.100.1:3306/WSO2_CONFIG_DB?autoReconnect=true
+    url: jdbc:mysql://192.168.100.63:3306/WSO2_CONFIG_DB?autoReconnect=true
     username: "%{hiera('wso2::datasources::mysql::username')}"
     password: "%{hiera('wso2::datasources::mysql::password')}"
     jndi_config: jdbc/WSO2MetricsDB

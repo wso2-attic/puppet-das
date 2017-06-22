@@ -19,11 +19,12 @@ servers:
     hostname: das.dev.wso2.org
     facters:
       product_name: wso2das
-      product_version: 3.0.1
+      product_version: 3.1.0
       product_profile: default
       environment: dev
       platform: default
       use_hieradata: true
+      pattern: pattern-1
     box: ubuntu/trusty64
     ip: 192.168.100.61
     ram: 2048

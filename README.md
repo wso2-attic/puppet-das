@@ -9,17 +9,29 @@ This repository contains the Puppet Module for installing and configuring WSO2 D
 
 ## Supported Puppet Versions
 
-- Puppet 2.7, 3 or newer
+- Puppet 3.x
+
+## Setup Puppet Environment
+
+* Setup the puppet environment with the puppet modules wso2das and wso2base.
+* WSO2 DAS 3.1.0  puppet modules are compatible and tested with
+[puppet-base](https://github.com/wso2/puppet-base/) version 1.0.0 and [puppet-common](https://github.com/wso2/puppet-common) version 1.0.0
+* So if using puppet-common's setup.sh to setup the PUPPET_HOME, use this version (1.0.0) of puppet-common.
+* After setting up PUPPET_HOME using puppet-common's setup.sh, checkout the above mentioned compatible version of puppet-base.
 
 ## How to Contribute
 Follow the steps mentioned in the [wiki](https://github.com/wso2/puppet-base/wiki) to setup a development environment and update/create new puppet modules.
 
 ## Packs to be Copied
 
-Copy the following files to their corresponding locations.
+Copy the following files to their corresponding locations, in the Puppet Master.
 
-1. WSO2 Data Analytics Server distribution (3.0.0 or 3.0.1) to `<PUPPET_HOME>/modules/wso2das/files`
-2. JDK 1.7_80 distribution to `<PUPPET_HOME>/modules/wso2base/files`
+1. WSO2 Data Analytics Server 3.1.0 distribution (wso2das-3.1.0.zip) to `<PUPPET_HOME>/modules/wso2das/files`
+2. JDK jdk-8u112-linux-x64.tar.gz distribution to `<PUPPET_HOME>/modules/wso2base/files`
+3. (if using MySQL databases)MySQL JDBC driver JAR (mysql-connector-java-x.x.xx-bin.jar) into the <PUPPET_HOME>/modules/wso2das/files/configs/repository/components/lib
+4. (if using svn based deployment synchronization)
+    a. svnkit-all-1.8.7.wso2v1.jar into <PUPPET_HOME>/modules/wso2das/files/configs/repository/components/dropins
+    b. trilead-ssh2-1.0.0-build215.jar into <PUPPET_HOME>/modules/wso2das/files/configs/repository/components/lib
 
 ## Running WSO2 Data Analytics Server in the `default` profile
 No changes to Hiera data are required to run the `default` profile.  Copy the above mentioned files to their corresponding locations and apply the Puppet Modules.

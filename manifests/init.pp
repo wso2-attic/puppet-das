@@ -21,7 +21,6 @@ class wso2das (
   $metrics_datasources    = $wso2das::params::metrics_datasources,
   $spark                  = $wso2das::params::spark,
   $is_datasource          = $wso2das::params::is_datasource,
-  $single_node_deployment = $wso2das::params::single_node_deployment,
   $ha_deployment          = $wso2das::params::ha_deployment,
   $portal                 = $wso2das::params::portal,
 
@@ -75,7 +74,7 @@ class wso2das (
   $jvm                    = $wso2das::params::jvm,
   $fqdn                   = $wso2das::params::fqdn,
   $sso_authentication     = $wso2das::params::sso_authentication,
-  $user_management        = $wso2das::params::user_management
+  $user_management        = $wso2das::params::user_management,
 ) inherits wso2das::params {
 
 
@@ -83,7 +82,6 @@ class wso2das (
   validate_hash($metrics_datasources)
   validate_hash($spark)
   validate_string($is_datasource)
-  validate_hash($single_node_deployment)
   validate_hash($ha_deployment)
   validate_hash($portal)
 
