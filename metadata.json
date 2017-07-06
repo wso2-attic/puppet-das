@@ -14,6 +14,6 @@
   ],
   "tags" : ["wso2das", "3.1.0"],
   "dependencies": [
-    { "name": "wso2/wso2base", "version_requirement": "1.0.0" }
+    { "name": "wso2/wso2base", "version_requirement": "1.0.1" }
   ]
 }
