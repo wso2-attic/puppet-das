@@ -1,4 +1,4 @@
-# WSO2 Data Analytics Server Puppet Module
+# [DEPRECATED]  WSO2 Data Analytics Server Puppet Module
 
 This repository contains the Puppet Module for installing and configuring WSO2 Data Analytics Server on various environments. It supports multiple versions of WSO2 Data Analytics Server. Configuration data is managed using [Hiera](http://docs.puppetlabs.com/hiera/1/). Hiera provides a mechanism for separating configuration data from Puppet scripts and managing them in a separate set of YAML files in a hierarchical manner.
 
